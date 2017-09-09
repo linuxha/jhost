@@ -1,0 +1,199 @@
+README for the Java Host application. (Beta Version 0.92.)
+
+(C) Paul Tokarchuk, 2001   (ptokarchuk@sympatico.ca)
+
+Sections:
+
+1. Description of Java Host
+2. Current state of Java Host.
+3. What you need to run Java Host.
+4. Building Java Host.
+5. Known Problems.
+6. Submitting a bug report.
+7. Future Additions.
+8. Connecting the HCS
+9. Setting up JavaHost on a Mac
+
+** Note that this is a BETA version of the Java Host application. I am
+** still working on finalizing the code. Please do not make any changes
+** to the CVS versions of the software without confirming them with me first.
+
+1. Description of Java Host
+   ------------------------
+
+Java Host is a Java 1.1 based (Java 2.0 compatible), multiplatform
+implementation of an HCS II host application. It has been developed on a
+MacIntosh computer without using any Virtual PC emulation, which confirms
+that it is possible to interact with the HCS II controller in a platform
+neutral manner. At a minimum this application should work without
+modification on Macs, Windows ME/NT, Solaris, and Linux. 
+
+The Java Host has been designed with expandability in mind. To this end it
+supports a plug-in architecture for UI which is the only part of the
+application that anyone should have a need to change, though the low level
+port code has also been designed to be easily changed (to replace the
+serial port with Ethernet for example though this functionality is incomplete
+in this beta version).
+
+Three example UIs are provided. The first is an ASCII UI which can send
+all possible commands to the controller and which prints all data returned
+by the controller. The second is a simple UI which prints console messages
+returned by the controller and serves as an example of writing a macro
+facility for the Java Host. The third UI is a simple graphics UI which
+displays a simple house floor plan and displays the state of X10 lights
+in each of the four rooms. It serves as an example of a GUI on the Java
+Host.
+
+Additionally the source for the default UI is available and can provide ideas
+for implemented alternate UIs.
+
+2. Current State
+   -------------
+
+The current beta version of the Java Host provides a UI which allows for the
+monitoring and command of the HCS II controller. Additionally the UI can be
+used with the Java compiler (also available on the CC Concepts web page) to
+compile and upload programs to the controller. Aside from mostly cosmetic
+changes the Java Host should be considered complete.
+
+3. What you need to run Java Host
+   ------------------------------
+
+Java communications with a serial port is not a standard part of a Java
+Runtime kit. You will need to get a copy of javax.comm from 
+
+Linux and other Unices:
+http://www.rxtx.org/
+
+Mac OS 9:
+http://homepage.mac.com/pcbeard/javax.comm.MRJ/
+
+Solaris and Windows:
+http://java.sun.com/products/javacomm/
+
+Note that since this application is still under development I have
+only tried using it with the Mac OS9 version of javax.comm, but others
+have reported success on other platforms.
+
+The javax.comm classes have to appear in your CLASSPATH to be available to
+Java Host. (Either place the javax.comm jar file where you find other
+java classes, or add the directory you place javax.comm into to your
+CLASSPATH environment variable.)
+
+Additionally to use the default UI you will need the Swing UI classes. If
+you are using Java 2.0 then this is included as part of the normal distribution.
+If you are using a version prior to Java 2.0 you will need to get the Swing
+classes from:
+
+http://java.sun.com/products/jfc/download.html
+
+If you download the Swing library (part of the JFC - Java Foundation Classes)
+you will again have to ensure that the .jar file is included in your CLASSPATH.
+
+And finally javahost.jar must also appear in your CLASSPATH. (In the end it is
+probably easiest if you place the javax.comm jar file and the javahost.jar
+file wherever the Java runtime jar files are on your system. This way you do
+not need to change your CLASSPATH environment variable.)
+
+Then to run Java Host you do the following:
+
+java javahost
+
+Additionally javahost takes a few arguments. By default if you do now specify
+any javahost will start up with its default UI. You can replace the default UI
+by specifying your UI on the command line as:
+
+java javahost <dir> myUIs
+
+where <dir> is the directory in which the compiled UI class files are to be
+found (this directory must also appear in your CLASSPATH). After this you
+list the UIs that you want to load, omitting the '.class' extension.
+
+If you would like to use the default UI and your UI objects specify '-d'
+(i.e. as in default) after javahost:
+
+java javahost -d <dir> myUIs
+
+Finally you can also load your own UIs using the "Open UI" under the "File"
+menu of the default UI (this is assuming that you have not disabled it).
+
+4. Building Java Host
+   ------------------
+
+In this beta, there should be no reasons to build the JavaHost but if you 
+wish to, with CLASSPATH set as above, just run "javac *.java". Then making
+sure the current path is in the CLASSPATH, just use "java javahost" to run
+the version you built. 
+
+5. Known Problems
+   --------------
+
+I'm not aware of any bugs at this time. There are a number of things that
+I'd like to change before calling the Java Host complete.
+
+- When defining your own UI the directory containing the classes must be
+  included in the CLASSPATH. (This is an unfortunate limitation of the current
+  class loading mechanism.)
+- This readme needs much more detail.
+
+6. Submitting a bug report
+   -----------------------
+
+Use Bugzilla on the cc-concepts page to report any bugs. Please include
+as much information as possible to help in tracking down the bug.
+
+7. Future Additions
+   ----------------
+
+There are two additions I'd like to add, that are quite simple. First add
+the ability to send mail when the controller sends out a particular text
+message (could be used to send email when a security system reports an
+event for example). Second add the ability to grab content from the
+Internet (such as weather) and send it to a display device.
+
+8. Connecting the HCS
+   ------------------
+
+Some computers no longer come with serial ports (modern Apple computers
+for example). If the computer has a USB port you can get a USB to serial
+adapter, such as the Keyspan Twin adapter (www.keyspan.com). You will also
+need connectors or cables to convert the old serial port connector on the
+HCS controller to the connector on the adapter.
+
+9. Setting up JavaHost on a Mac
+   ----------------------------
+
+Unfortunately setting up JavaHost on a Mac running OS 9 is not quite as easy
+as on other platforms. Here then are instructions which I hope will get you
+up and running.
+
+First, make sure you can connect the HCS controller to your Mac using the
+brief instructions in the previous section.
+
+To run Java applications standalone (i.e. without a web browser) you need
+a tool called JBindery which is available as part of the MRJ (available at
+http://developer.apple.com/java/download.html).
+
+You will also need to install javax.comm and the JFC as outlined in section 3.
+
+Once all this is set up (I recommend that you put aliases to the various
+extra jar files into your Java runtime, ie. on my machine its
+/Macintosh HD/System Folder/Extensions/MRJ Libraries/MRJClasses) you are
+ready to set up JBindery to run JavaHost.
+
+Launch JBindery. Select the "Command" icon. Next to "Class name:" enter
+"javahost". Next to "Optional parameters:" you can enter any of the
+"[-d] [dir [UIs]*]" options that are mentioned in section 3.
+
+Next select the "Classpath" icon. If you have put aliases to all .jar files,
+including javahost.jar into your MRJClasses directory, you don't need to
+change anything here. Otherwise add each .jar file by selecting "Add
+.zip File...". As well, if there are classes you would like to reference
+that are not in .jar files, add their parent directory using "Add Folder...".
+
+When you have completed this set up, select "Save Settings..." and save
+the settings as an application with an appropriate name, ex. "Run javahost".
+
+Then select Run. In the future you just need to double click the file "Run
+javahost" to start JavaHost.
+
